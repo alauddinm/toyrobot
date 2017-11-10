@@ -1,12 +1,13 @@
 from SquareBoard import SquareBoard
 from GlobalPosition import GlobalPosition
+import re
 
 class Test:
+    input = raw_input("Command: ")
+    whiteSpaceRegex = "\\s";
+    position = input.split(whiteSpaceRegex);
+    print (position)
+    position = position.upper()
 
-    def __init__(self, squareBoard, toyRobot, game):
-        self.squareBoard = SquareBoard(4, 4)  # Row, Col, validPosition
-        self.toyRobot = ToyRobot()  # move, rotate left & right
-        self.game = Game(self.squareBoard, self.toyRobot)  # decide on which command to  execute & report
-
-        print ('GlobalPostion positions updated.' )
-    # print (globalPosition)
+    pattern = re.compile("^\s+|\s*,\s*|\s+$")
+    print([x for x in pattern.split(position) if x])

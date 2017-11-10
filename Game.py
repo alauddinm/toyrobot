@@ -1,48 +1,97 @@
 from Command import Command
 from Position import Position
-from SquareBoard import SquareBoard
-from GlobalPosition import GlobalPosition
 from Config import Config
 
-#Class Game():
-#def __init__():
 iConfig = Config()
 class Game():
-   '''def __init__(self,command,X,Y,direction):
-       self.X = X
-       self.Y = Y
-       self.direction = direction'''
-    #self.command=command
 
    def placeToyRobot(self, position):
        if iConfig.getSquareBoard().isValidPosition(position) == False:
            return False
        else:
            iConfig.setPosition(position)
-           print(iConfig.getPosition().getPositionX())
-
+           #print(iConfig.getPosition().getPositionX())
 
    def evaluateCommand(self,command,position):
        #print (position)
-      # if ((command == Command.PLACE.name) and ((position.X<0 or position.X>4) or (position.Y<0 or position.Y>4))):
-       #     raise Exception('Invalid Command')
+       output=None
+       if ((command == Command.PLACE.name) and ((position.X<0 or position.X>4) or (position.Y<0 or position.Y>4))):
+            raise Exception('Invalid Command')
        if (command)==Command.PLACE.name:
-
            output= self.placeToyRobot(position)
-
+           return True
        elif command==Command.MOVE.name:
-            print('Move')
+           output =self.moveRobot()
        elif command ==Command.LEFT.name:
-            print('Left')
+           output=self.moveLeft()
        elif command ==Command.RIGHT.name:
-            print('Right')
+           output=self.moveRight()
        elif command ==Command.REPORT.name:
             print('Current Position: '+str(iConfig.getPosition().getPositionX())+' , '+str(iConfig.getPosition().getPositionY())+' , '+iConfig.getPosition().getDirection())
+       return output
 
 
+   def moveRobot(self):
+       from Direction import Direction
+       position=iConfig.getPosition()
+       #newPositon=None # declare new position
 
+       X=position.getPositionX()
+       Y=position.getPositionY()
+       direction=position.getDirection()
 
+       if direction==Direction.NORTH.name:
+           Y=Y+1
+       elif direction==Direction.SOUTH.name:
+           Y=Y-1
+       elif direction == Direction.EAST.name:
+           X=X+1
+       elif direction == Direction.WEST.name:
+           X=X-1
 
-    #validate PLACE params
+       newPosition=Position(X,Y,direction)
+       # Evaluate position
+       if iConfig.getSquareBoard().isValidPosition(newPosition) == False:
+           return False
+       iConfig.setPosition(newPosition)
+       return True
+
+   def moveLeft(self):
+       from Direction import Direction
+       #newDirection=Direction()
+       position=iConfig.getPosition()
+       currentDirection=position.getDirection()
+       if currentDirection==Direction.NORTH.name:
+          newDirection=Direction.WEST.name
+       elif currentDirection==Direction.WEST.name:
+          newDirection=Direction.SOUTH.name
+       elif currentDirection == Direction.SOUTH.name:
+          newDirection = Direction.EAST.name
+       elif currentDirection==Direction.EAST.name:
+          newDirection=Direction.NORTH.name
+
+       position.setDirection(newDirection)
+       iConfig.setPosition(position)
+       #print('LeftPos:'+str(position.getPositionX())+str(position.getPositionY())+str(position.getDirection()))
+       return True
+
+   def moveRight(self):
+       from Direction import Direction
+       #newDirection = Direction()
+       position = iConfig.getPosition()
+       currentDirection = position.getDirection()
+       if currentDirection == Direction.NORTH.name:
+           newDirection = Direction.EAST.name
+       elif currentDirection == Direction.EAST.name:
+           newDirection = Direction.SOUTH.name
+       elif currentDirection == Direction.SOUTH.name:
+           newDirection = Direction.WEST.name
+       elif currentDirection == Direction.WEST.name:
+           newDirection = Direction.NORTH.name
+
+       position.setDirection(newDirection)
+       iConfig.setPosition(position)
+       #print('RightPos:' + str(position.getPositionX()) + str(position.getPositionY()) + str(position.getDirection()))
+       return True
 
 

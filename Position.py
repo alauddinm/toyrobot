@@ -22,7 +22,7 @@ class Position():
         self.X=X
 
     def getPositionY(self):
-        return self.X
+        return self.Y
 
     def setPositionY(self,X):
         self.X=X
